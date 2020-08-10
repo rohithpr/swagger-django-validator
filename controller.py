@@ -84,7 +84,8 @@ def filter_ignorable_endpoints(ignorable_patterns, endpoints):
     filtered_endpoints = []
     for endpoint in endpoints:
         for ignorable_pattern in ignorable_patterns:
-            if ignorable_pattern in endpoint:
+            # TODO: Rename to ignorable endpoint instead?
+            if ignorable_pattern == endpoint:
                 break
         else:
             filtered_endpoints.append(endpoint)
