@@ -1,10 +1,10 @@
 #!/bin/sh -l
 
 # Install dependencies of the project being checked to ensure that django.setup() runs correctly.
-pip install -r requirements.txt
+pip install -r requirements.txt > /dev/null 2>&1
 
 # Install pyyaml to read the Swagger file.
-pip install pyyaml
+pip install pyyaml > /dev/null 2>&1
 
 # TODO: Formalize hook scripts?
 # TODO: Check if post_install script exists before running it
