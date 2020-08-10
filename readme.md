@@ -29,6 +29,7 @@ jobs:
         id: swagger-django-validator
         uses: rohithpr/swagger-django-validator@master
         env:
+          SWAGGER_FILE_PATH: path/to/file.yml  # Relative path to the swagger file being checked.
           DJANGO_SETTINGS_MODULE: path.to.file  # Dot separated path to the project's settings file.
 ```
 
