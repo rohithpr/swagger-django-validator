@@ -149,7 +149,7 @@ def visit_views_registered_in_swagger(resolver, endpoints, views):
 
 def check_if_all_django_endpoints_were_visited(views):
     unvisited_views = []
-    for key, value in views.keys():
+    for key, value in views.items():
         if not value["visited"]:
             unvisited_views.append(value["path"])
     if unvisited_views:
