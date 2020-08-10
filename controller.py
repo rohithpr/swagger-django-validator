@@ -87,6 +87,9 @@ def filter_ignorable_endpoints(ignorable_patterns, endpoints):
             # TODO: Rename to ignorable endpoint instead?
             if ignorable_pattern == endpoint:
                 break
+            # TODO: Allow regex matches from config file instead of forcing all config into env vars?
+            if "/admin/" in endpoint:
+                break
         else:
             filtered_endpoints.append(endpoint)
     return filtered_endpoints
