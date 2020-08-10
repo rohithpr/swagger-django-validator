@@ -151,7 +151,7 @@ def check_if_all_django_endpoints_were_visited(views):
     unvisited_views = []
     for key, value in views.items():
         if not value["visited"]:
-            unvisited_views.append(value["path"])
+            unvisited_views.append(value["endpoint"])
     if unvisited_views:
         print(f"The following Django endpoints aren't registered in the Swagger file: {unvisited_views}")
     return bool(unvisited_views)
