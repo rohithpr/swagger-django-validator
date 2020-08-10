@@ -8,10 +8,13 @@ from django.urls.exceptions import Resolver404
 django.setup()
 
 
-def get_env_var(var_name):
+def get_env_var(var_name, optional=False, default=None):
     env_var = os.environ.get(var_name)
     if not env_var:
-        raise Exception(f"Environment variable `{var_name}` not found.")
+        if not optional:
+            raise Exception(f"Environment variable `{var_name}` not found.")
+        else:
+            env_var = default
     return env_var
 
 
