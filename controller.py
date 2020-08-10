@@ -168,6 +168,9 @@ def main():
     )
     django_has_additional_endpoints = check_if_all_django_endpoints_were_visited(views_of_django_endpoints)
 
+    if any([swagger_has_unresolvable_endpoints, swagger_has_additional_endpoints, django_has_additional_endpoints]):
+        raise Exception("There seems to be a mismatch between the Django app and the Swagger file.")
+
 
 if __name__ == "__main__":
     main()
