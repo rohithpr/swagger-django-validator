@@ -119,10 +119,43 @@ def get_resolvable_django_endpoints(resolver, *, log_unresolvable_paths=True):
     return resolvable_endpoints, bool(unresolvable_endpoints)
 
 
+def get_views_of_django_endpoints(resolver, endpoints):
+    # TODO: Do we even need these views? Can we get away with just matching
+    # swagger paths and django paths once we know the sets of resolvable paths?
+    views = {}
+    for endpoint in endpoints:
+        handler = resolver.resolve(endpoint)
+        # TODO: What if the same view is registered for multiple endpoints?
+        views[handler.func] = {"visited": 0, "endpoint": endpoint, "handler": handler}
+    return views
+
+
+def visit_views_registered_in_swagger(resolver, endpoints, views):
+    # TODO: Rename method
+    # TODO: Stop mutating `views`
+    endpoints_not_found_in_views_dict = []
+    for endpoint in endpoints:
+        handler = resolver.resolve(endpoint)
+        if handler.func in views:
+            views[handler.func]["visited"] += 1
+        else:
+            endpoints_not_found_in_views_dict.append(path)
+    if endpoints_not_found_in_views_dict:
+        print(
+            f"The following Swagger endpoints don't have a corresponding Django endpoint: {endpoints_not_found_in_views_dict}"
+        )
+    return bool(endpoints_not_found_in_views_dict)
+
+
 def main():
     resolver = get_resolver()
     resolvable_swagger_endpoints, swagger_has_unresolvable_endpoints = get_resolvable_swagger_endpoints(resolver)
     resolvable_django_endpoints, django_has_unresolvable_endpoints = get_resolvable_django_endpoints(resolver)
+
+    views_of_django_endpoints = get_views_of_django_endpoints(resolver, resolvable_django_endpoints)
+    swagger_has_additional_endpoints = visit_views_registered_in_swagger(
+        resolver, resolvable_swagger_endpoints, views_of_django_endpoints
+    )
 
 
 if __name__ == "__main__":
