@@ -142,7 +142,7 @@ def visit_views_registered_in_swagger(resolver, endpoints, views):
             endpoints_not_found_in_views_dict.append(path)
     if endpoints_not_found_in_views_dict:
         print(
-            f"The following Swagger endpoints don't have a corresponding Django endpoint: {endpoints_not_found_in_views_dict}"
+            f"The following Swagger endpoints aren't registered in the Django app: {endpoints_not_found_in_views_dict}"
         )
     return bool(endpoints_not_found_in_views_dict)
 
