@@ -31,6 +31,8 @@ jobs:
         env:
           SWAGGER_FILE_PATH: path/to/file.yml  # Relative path to the swagger file being checked.
           DJANGO_SETTINGS_MODULE: path.to.file  # Dot separated path to the project's settings file.
+          IGNORE_SWAGGER_PATTERNS: "pattern_to_ignore,pattern_to_ignore"  # Optional, comma separated list of patterns to be ignored in the swagger file.
+          IGNORE_DJANGO_PATTERNS: "pattern_to_ignore,pattern_to_ignore"  # Optional, comma separated list of patterns to be ignored in the Django app.
 ```
 
 ## Improvements to be made

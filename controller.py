@@ -80,22 +80,37 @@ def get_unresolvable_endpoints(resolver, endpoints):
     return unresolvable_endpoints
 
 
+def filter_ignorable_endpoints(ignorable_patterns, endpoints):
+    filtered_endpoints = []
+    for endpoint in endpoints:
+        for ignorable_pattern in ignorable_patterns:
+            if ignorable_pattern in endpoint:
+                break
+        else:
+            filtered_endpoints.append(endpoint)
+    return filtered_endpoints
+
+
 def get_resolvable_swagger_endpoints(resolver, *, log_unresolvable_paths=True):
+    ignorable_patterns = get_env_var("IGNORE_SWAGGER_PATTERNS", optional=True, default="").split(",")
     file_path = get_env_var("SWAGGER_FILE_PATH")
     file_contents = read_swagger_file(file_path)
     endpoints = get_swagger_endpoints(file_contents)
-    unresolvable_endpoints = get_unresolvable_endpoints(resolver, endpoints)
-    resolvable_endpoints = set(endpoints) - set(unresolvable_endpoints)
+    filtered_endpoints = filter_ignorable_endpoints(ignorable_patterns, endpoints)
+    unresolvable_endpoints = get_unresolvable_endpoints(resolver, filtered_endpoints)
+    resolvable_endpoints = set(filtered_endpoints) - set(unresolvable_endpoints)
     if log_unresolvable_paths:
         print(f"Found the following unresolvable endpoints in the Swagger file: {unresolvable_endpoints}")
     return resolvable_endpoints, bool(unresolvable_endpoints)
 
 
 def get_resolvable_django_endpoints(resolver, *, log_unresolvable_paths=True):
-    endpoints = get_django_endpoints(resolver.url_patterns)
     # TODO: Refactor
-    unresolvable_endpoints = get_unresolvable_endpoints(resolver, endpoints)
-    resolvable_endpoints = set(endpoints) - set(unresolvable_endpoints)
+    ignorable_patterns = get_env_var("IGNORE_DJANGO_PATTERNS", optional=True, default="").split(",")
+    endpoints = get_django_endpoints(resolver.url_patterns)
+    filtered_endpoints = filter_ignorable_endpoints(ignorable_patterns, endpoints)
+    unresolvable_endpoints = get_unresolvable_endpoints(resolver, filtered_endpoints)
+    resolvable_endpoints = set(filtered_endpoints) - set(unresolvable_endpoints)
     if log_unresolvable_paths:
         print(f"Found the following unresolvable endpoints in the Django app: {unresolvable_endpoints}")
         print(
