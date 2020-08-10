@@ -147,6 +147,16 @@ def visit_views_registered_in_swagger(resolver, endpoints, views):
     return bool(endpoints_not_found_in_views_dict)
 
 
+def check_if_all_django_endpoints_were_visited(views):
+    unvisited_views = []
+    for key, value in views.keys():
+        if not value["visited"]:
+            unvisited_views.append(value["path"])
+    if unvisited_views:
+        print(f"The following Django endpoints aren't registered in the Swagger file: {unvisited_views}")
+    return bool(unvisited_views)
+
+
 def main():
     resolver = get_resolver()
     resolvable_swagger_endpoints, swagger_has_unresolvable_endpoints = get_resolvable_swagger_endpoints(resolver)
@@ -156,6 +166,7 @@ def main():
     swagger_has_additional_endpoints = visit_views_registered_in_swagger(
         resolver, resolvable_swagger_endpoints, views_of_django_endpoints
     )
+    django_has_additional_endpoints = check_if_all_django_endpoints_were_visited(views_of_django_endpoints)
 
 
 if __name__ == "__main__":
