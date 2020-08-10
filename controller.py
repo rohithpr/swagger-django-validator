@@ -99,7 +99,7 @@ def get_resolvable_swagger_endpoints(resolver, *, log_unresolvable_paths=True):
     filtered_endpoints = filter_ignorable_endpoints(ignorable_patterns, endpoints)
     unresolvable_endpoints = get_unresolvable_endpoints(resolver, filtered_endpoints)
     resolvable_endpoints = set(filtered_endpoints) - set(unresolvable_endpoints)
-    if log_unresolvable_paths:
+    if unresolvable_endpoints and log_unresolvable_paths:
         print(f"Found the following unresolvable endpoints in the Swagger file: {unresolvable_endpoints}")
     return resolvable_endpoints, bool(unresolvable_endpoints)
 
@@ -111,7 +111,7 @@ def get_resolvable_django_endpoints(resolver, *, log_unresolvable_paths=True):
     filtered_endpoints = filter_ignorable_endpoints(ignorable_patterns, endpoints)
     unresolvable_endpoints = get_unresolvable_endpoints(resolver, filtered_endpoints)
     resolvable_endpoints = set(filtered_endpoints) - set(unresolvable_endpoints)
-    if log_unresolvable_paths:
+    if unresolvable_endpoints and log_unresolvable_paths:
         print(f"Found the following unresolvable endpoints in the Django app: {unresolvable_endpoints}")
         print(
             "This shouldn't happen, and is likely to be an issue with the validation tool. Please report the issue to the maintainer of the project."
