@@ -91,7 +91,7 @@ def get_resolvable_swagger_endpoints(resolver, *, log_unresolvable_paths=True):
 def get_resolvable_django_endpoints(resolver, *, log_unresolvable_paths=True):
     endpoints = get_django_endpoints(resolver.url_patterns)
     # TODO: Refactor
-    unresolvable_endpoints = get_unresolvable_endpoints(endpoints)
+    unresolvable_endpoints = get_unresolvable_endpoints(resolver, endpoints)
     resolvable_endpoints = set(endpoints) - set(unresolvable_endpoints)
     if log_unresolvable_paths:
         print(f"Found the following unresolvable endpoints in the Django app: {unresolvable_endpoints}")
