@@ -1,0 +1,7 @@
+name: Swagger Django Validator
+
+description: Github action to ensure that a Django app and its Swagger file are not out of sync.
+
+runs:
+  using: docker
+  image: Dockerfile
