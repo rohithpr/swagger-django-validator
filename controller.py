@@ -88,7 +88,7 @@ def filter_ignorable_endpoints(ignorable_patterns, endpoints):
             if ignorable_pattern == endpoint:
                 break
             # TODO: Allow regex matches from config file instead of forcing all config into env vars?
-            if "/admin/" in endpoint:
+            if "admin/" in endpoint:
                 break
         else:
             filtered_endpoints.append(endpoint)
